@@ -1,0 +1,176 @@
+:root {
+  --blue: #007bff;
+  --hov-blue: #1f6dc2;
+  --soft-blue: rgba(0, 123, 255, 0.15);
+  --secondary-base: #13814c;
+  --hov-secondary-base: #13814C;
+  --soft-secondary-base: rgba(255, 197, 25, 0.15);
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --soft-white: #b5b5bf;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #b1154a;
+  --hov-primary: #c3144a;
+  --soft-primary: rgba(247, 123, 11, 0.15);
+  --secondary: #8f97ab;
+  --soft-secondary: rgba(143, 151, 171, 0.15);
+  --success: #0abb75;
+  --soft-success: rgba(10, 187, 117, 0.15);
+  --info: #25bcf1;
+  --soft-info: rgba(37, 188, 241, 0.15);
+  --warning: #ffc519;
+  --soft-warning: rgba(255, 197, 25, 0.15);
+  --danger: #ef486a;
+  --soft-danger: rgba(239, 72, 106, 0.15);
+  --light: #f2f3f8;
+  --soft-light: #dfdfe6;
+  --dark: #111723;
+  --soft-dark: #1b1b28;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
+}
+
+/* حواف أوضح ونطاق أضيق */
+.fs-wrap{
+  --fs-card-min: 300px;
+  --fs-card-min-mobile: 260px;
+  --fs-card-height: 360px;
+
+  width:min(100%, 980px);   /* أضيق */
+  margin-inline:auto;
+
+  border-radius:8px;        /* حواف أكثر حدة */
+  padding:4px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+  color:#fff;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 42%),
+    radial-gradient(900px 420px at -10% 0%, rgba(255,255,255,.14), transparent 60%),
+    radial-gradient(600px 320px at 88% -18%, rgba(255,255,255,.08), transparent 60%),
+    radial-gradient(720px 300px at 50% -6%,
+      rgba(255,193,7,.22) 0%,
+      rgba(255,193,7,.12) 35%,
+      rgba(255,193,7,0)   70%
+    ),
+    /* إزالة البرتقالي */
+    linear-gradient(90deg,
+      var(--hov-primary) 0%,
+      var(--primary) 100%
+    );
+}
+
+/* مُعدِّل إضافي إن احتجته لاحقاً */
+.fs-wrap.fs-narrow{
+  width:min(100%, 980px);
+  margin-inline:auto;
+}
+
+/* الهيدر */
+.fs-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.fs-left{ display:flex; align-items:center; gap:10px; min-width:0 }
+
+/* أيقونة البرق كصورة بدون خلفية */
+.fs-bolt{
+  background:none;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.fs-bolt-img{
+  width:48px;     /* كبّر أو صغّر هنا */
+  height:48px;
+  object-fit:contain;
+}
+
+.fs-title{
+  margin:0;
+  font-size: clamp(16px, 2.4vw, 20px);
+  font-weight:700;
+  color:#fff;
+}
+.fs-sub{
+  font-size:13px;
+  opacity:.9;
+  color:#fff;
+  margin-top:2px;
+}
+
+/* يمين الهيدر */
+.fs-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* زر الأيقونة فقط */
+.fs-viewall{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-weight:600;
+  text-decoration:none;
+  color:#fff;
+  background: rgba(0,0,0,.25);
+  padding:8px 10px;
+  border-radius:10px;
+  transition: background .15s ease, transform .15s ease;
+  border:none;
+  cursor:pointer;
+}
+.fs-viewall:hover{
+  background: rgba(0,0,0,.35);
+  transform: translateY(-1px);
+}
+.fs-viewall.fs-icon{
+  padding:8px;
+  gap:0;
+  line-height:0;
+}
+.fs-chevron{ display:block; width:18px; height:18px }
+
+
+/* العد التنازلي */
+.fs-sep{ width:1px; height:20px; background:rgba(255,255,255,.25); margin:0 6px }
+.fs-count{ display:flex; align-items:center; gap:6px }
+.fs-tbox{
+  background: rgba(0,0,0,.45);
+  color:#fff;
+  border-radius:8px;
+  min-width:48px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  letter-spacing:1px;
+}
+.fs-tval{ font-variant-numeric: tabular-nums; font-size:16px }
+.fs-colon{ font-weight:700; color:rgba(255,255,255,.9) }
+
+/* زر معطل عند الحاجة */
+.fs-viewall.is-disabled{
+  pointer-events:none;
+  opacity:.9;
+}
