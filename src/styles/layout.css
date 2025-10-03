@@ -1,0 +1,27 @@
+:root{
+  --container-max:1200px;
+  --container-pad:16px;
+  --gap:12px;
+}
+
+/* الحاوية العامة */
+.container{
+  max-width:var(--container-max);
+  width:100%;
+  margin-inline:auto;
+  padding-inline:var(--container-pad);
+  box-sizing:border-box;
+}
+
+/* شبكة الأعمدة */
+.grid{display:grid;gap:var(--gap)}
+.grid-3{grid-template-columns:30% 50% 20%}
+
+/* لا قواعد مرتبطة بـ .flow هنا إطلاقاً */
+@media (max-width:1200px){
+  .grid-3{grid-template-columns:1fr 1fr}
+}
+@media (max-width:992px){
+  .grid-3{grid-template-columns:1fr}
+}
+.side{display:grid;gap:12px;align-content:start;overflow:visible}

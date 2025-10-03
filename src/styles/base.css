@@ -1,0 +1,12 @@
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans",sans-serif;
+  color:var(--dark); background:#fff; line-height:1.7;   /* سطر أطول */
+}
+a{color:inherit}
+.page{max-width:var(--page-w);margin-inline:auto;padding:20px} /* Padding أكبر */
+.head{display:grid;gap:8px;margin-bottom:16px}
+.breadcrumb{font-size:var(--fs-12);color:var(--secondary)}
+.breadcrumb a{color:var(--secondary);text-decoration:none}

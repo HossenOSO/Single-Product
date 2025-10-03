@@ -1,0 +1,27 @@
+:root{
+  --blue:#007bff; --hov-blue:#1f6dc2; --soft-blue:rgba(0,123,255,.15);
+  --secondary-base:#13814c; --hov-secondary-base:#13814C;
+  --primary:#b1154a; --hov-primary:#c3144a; --soft-primary:rgba(247,123,11,.15);
+  --secondary:#8f97ab; --soft-secondary:rgba(143,151,171,.15);
+  --light:#f2f3f8; --dark:#111723; --bd:#e6e8ef; --white:#fff;
+
+  --page-w:1200px;
+
+  /* زدت نصف القطر والمسافات لزيادة الطول */
+  --r:12px;
+  --gap:32px;
+
+  /* أحجام نص */
+  --fs-12:12px; --fs-14:14px; --fs-16:16px; --fs-20:20px; --fs-22:22px; --fs-28:28px; --fs-30:30px;
+
+  /* ارتفاعات موحّدة */
+  --btn-h:52px;
+  --ctl-h:40px;
+
+  /* أبعاد الصور */
+  --thumb-size:76px;
+  --img-min-h:560px;        /* ارتفاع الصورة الرئيسي */
+  --img-min-h-sm:380px;     /* للموبايل */
+
+  --bp-lg:992px;
+}

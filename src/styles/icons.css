@@ -1,0 +1,13 @@
+.img-wrap{position:relative}
+.img-icos{position:absolute;top:8px;inset-inline-start:8px;display:flex;flex-direction:column;gap:8px;z-index:2}
+.img-ico{
+  width:36px;height:36px;display:grid;place-items:center;
+  background:#fff;border:1px solid var(--bd);border-radius:50%;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.img-ico:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.ico-wish{color:var(--primary)}
+.ico-compare{color:var(--blue)}
+.ico-wish.is-on{box-shadow:0 0 0 3px var(--soft-primary),0 2px 8px rgba(0,0,0,.08)}
+.ico-compare.is-on{box-shadow:0 0 0 3px var(--soft-blue),0 2px 8px rgba(0,0,0,.08)}

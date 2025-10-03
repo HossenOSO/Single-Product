@@ -1,0 +1,95 @@
+/* إيقاف التثبيت للـ BuyBox */
+.buy{
+  position: static;   /* كان sticky */
+  top: auto;
+  align-self: auto;
+
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  background: #fff;
+}
+
+.p-title{margin:0 0 2px 0;font-size:var(--fs-22);font-weight:800;color:var(--dark);line-height:1.5}
+
+.rating-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:15px;color:var(--dark);flex-wrap:wrap}
+.rating-row .stars{letter-spacing:.6px}
+.rating-row .rating-num{font-weight:700}
+.rating-row .rating-count{color:var(--secondary);font-size:13px}
+.rating-row .divider{color:var(--bd)}
+.rating-row .dot{color:var(--bd)}
+.link-sm{background:none;border:0;cursor:pointer;font-size:13px;color:var(--blue);padding:0}
+.link-sm:hover{color:var(--hov-blue)}
+
+.seller{font-size:var(--fs-14);color:var(--secondary);margin-top:4px}
+.price{display:flex;align-items:end;gap:12px;margin-top:4px}
+.price-now{font-size:var(--fs-30);font-weight:800;color:var(--primary)}
+.price-now span{font-size:var(--fs-16);font-weight:600;color:var(--secondary)}
+.price-note{font-size:var(--fs-12);color:var(--secondary)}
+
+.variant{border:0;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
+.variant legend{font-size:var(--fs-14);font-weight:700;margin-bottom:6px;width:100%}
+.pill{display:inline-flex;align-items:center}
+.pill input{position:absolute;opacity:0;pointer-events:none}
+.pill span{border:1px solid var(--bd);padding:10px 14px;border-radius:999px;font-size:var(--fs-14);cursor:pointer}
+.pill input:checked+span{border-color:var(--primary);box-shadow:0 0 0 4px var(--soft-primary);color:var(--primary);font-weight:700}
+
+.swatch{display:inline-grid;place-items:center}
+.swatch input{position:absolute;opacity:0}
+.swatch span{--size:32px;width:var(--size);height:var(--size);border-radius:10px;border:1px solid var(--bd);background:var(--sw);display:inline-block;cursor:pointer}
+.swatch input:checked+span{outline:2px solid var(--primary);border-color:transparent}
+
+.qty{display:flex;align-items:center;gap:10px}
+.qty-btn{width:44px;height:var(--ctl-h);border:1px solid var(--bd);background:#fff;border-radius:10px;font-size:20px;cursor:pointer}
+.qty input{width:76px;height:var(--ctl-h);border:1px solid var(--bd);border-radius:10px;text-align:center;font-size:16px}
+.stock{margin-inline-start:auto;font-size:var(--fs-12);color:var(--secondary)}
+
+/* ===== أزرار عريضة + أيقونة المفضلة ===== */
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.ctas-wide{
+  display:grid;
+  grid-template-columns: 1fr 1fr auto; /* زرين عريضين ثم أيقونة */
+  align-items:center;
+}
+.btn{
+  height:var(--btn-h);
+  border-radius:12px;
+  border:1px solid transparent;
+  padding:0 20px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .18s ease,color .18s ease,border-color .18s ease;
+}
+.btn-wide{width:100%}
+
+/* شراء الآن: فقط بوردر، وتمتلئ عند المرور */
+.btn-buy{
+  background:#fff;
+  color:var(--secondary-base);
+  border-color:var(--secondary-base);
+}
+.btn-buy:hover,
+.btn-buy:focus{
+  background:var(--secondary-base);
+  color:#fff;
+  border-color:var(--secondary-base);
+}
+
+/* أضف إلى السلة: تم تبديل اللون الأساسي مع لون الهوفر */
+.btn-cart{background:var(--hov-primary);color:#fff}
+.btn-cart:hover{background:var(--primary);color:#fff}
+
+/* زر أيقونة المفضلة بجانب الأزرار */
+.btn-fav{
+  width:52px;height:var(--btn-h);
+  display:grid;place-items:center;
+  background:#fff;border:1px solid var(--bd);border-radius:12px;
+  color:var(--primary);cursor:pointer;transition:border-color .18s ease, box-shadow .18s ease
+}
+.btn-fav:hover{border-color:var(--primary)}
+.btn-fav.is-on{box-shadow:0 0 0 4px var(--soft-primary);}
+
+.badges{display:flex;gap:14px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.badges li{font-size:13px;padding:8px 12px;border-radius:999px;background:var(--soft-secondary);color:var(--dark)}

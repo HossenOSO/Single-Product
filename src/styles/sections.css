@@ -1,0 +1,36 @@
+/* كلاس محايد للأقسام السفلية */
+.flow{
+  gap:28px;
+  margin:0;
+  padding:0;
+}
+
+/* ترويسة كل قسم */
+.section-block{border:0;border-radius:0;background:#fff;padding:0}
+.section-title{margin:0;padding:14px 0;font-size:20px;font-weight:800;color:var(--dark);border-bottom:1px solid var(--bd)}
+.section-block > *:not(.section-title){padding:14px 0}
+
+/* بطاقات المنتجات */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.card{display:grid;gap:8px;text-decoration:none;color:inherit;border:1px solid var(--bd);border-radius:12px;background:#fff;padding:10px;transition:border-color .18s}
+.card:hover{border-color:var(--primary)}
+.card-img{aspect-ratio:1/1;border:1px solid var(--bd);border-radius:10px;display:grid;place-items:center;background:#fff;overflow:hidden}
+.card-img img{max-width:100%;max-height:100%;object-fit:contain}
+.card-title{font-weight:700;color:var(--dark);font-size:14px;line-height:1.4}
+.card-price{font-weight:800;color:var(--primary);font-size:16px}
+.card-price span{font-size:12px;color:var(--secondary)}
+
+/* نصوص وقوائم */
+.kv{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.kv li{display:grid;grid-template-columns:160px 1fr;gap:10px;align-items:center}
+.kv li span{color:var(--secondary);font-size:13px}
+.kv li strong{color:var(--dark)}
+.list-dot{margin:0;padding-inline-start:18px}
+.list-dot li{margin:6px 0}
+.desc{margin:0;white-space:pre-line}
+.muted{color:var(--secondary);font-size:13px}
+
+/* شرائط */
+.chips{margin:0;padding:0;list-style:none;display:flex;gap:10px;flex-wrap:wrap}
+.chips li a{display:inline-block;border:1px solid var(--bd);padding:8px 12px;border-radius:999px;text-decoration:none;color:var(--dark);transition:border-color .18s}
+.chips li a:hover{border-color:var(--primary)}

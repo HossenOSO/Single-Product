@@ -1,0 +1,31 @@
+/* رأس التقييمات */
+.rv-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.rv-title{margin:0;font-size:var(--fs-20);font-weight:800}
+.rv-count{font-size:var(--fs-12);color:var(--secondary)}
+
+/* قائمة التعليقات كسلايدر أفقي */
+.rv-list{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  padding-block-end:4px;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+}
+.rv-list::-webkit-scrollbar{display:none}
+
+/* بطاقة التعليق */
+.rv-item{border:1px solid var(--bd);border-radius:var(--r);padding:12px;background:#fff}
+.rv-hdr{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.rv-author{font-weight:700}
+.rv-date{font-size:var(--fs-12);color:var(--secondary)}
+.rv-stars{font-size:var(--fs-14)}
+.rv-body{margin-top:8px;white-space:pre-wrap}
+.rv-empty{padding:14px;border:1px dashed var(--bd);border-radius:var(--r);color:var(--secondary);background:var(--soft-secondary)}
+
+/* تموضع الأسهم حول التعليقات */
+.reviews-wrap{position:relative}
+
+/* حجم بطاقة التعليق ضمن السلايدر */
+.rv-item.car-item{min-width:320px;max-width:340px;flex:0 0 auto}
