@@ -1,73 +1,120 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 
-export default function Reviews({ seed }) {
+export default function Reviews({ seed, onViewAll }) {
   const list = Array.isArray(seed?.data) ? seed.data : [];
   const trackRef = useRef(null);
+  const [canL, setCanL] = useState(false);
+  const [canR, setCanR] = useState(false);
 
-  const jump = (dir) => {
+  const update = useCallback(() => {
     const el = trackRef.current;
     if (!el) return;
-    const itemWidth = 320; // عرض بطاقة التعليق
-    const gap = 12;        // نفس الفاصل بين العناصر
-    const step = dir * (itemWidth + gap) * 2; // عنصران بالنقرة
-    el.scrollBy({ left: step, behavior: "smooth" }); // نفس منطق ProductPage
+    const max = el.scrollWidth - el.clientWidth;
+    const x = Math.max(0, Math.min(el.scrollLeft, max));
+    setCanL(x > 2);
+    setCanR(max - x > 2);
+  }, []);
+
+  useEffect(() => {
+    update();
+    const el = trackRef.current;
+    if (!el) return;
+    const onScroll = () => update();
+    const onResize = () => update();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [update]);
+
+  const jump = (dirStep) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const itemW = 360;      // عرض بطاقة التعليق
+    const gap = 12;         // نفس المسافة في CSS
+    const step = Math.max(itemW + gap, Math.floor(el.clientWidth * 0.9));
+    el.scrollBy({ left: dirStep * step, behavior: "smooth" });
   };
 
-  if (!list.length) return <div className="rv-empty">لا توجد تعليقات بعد</div>;
+  const goAll = () => {
+    if (typeof onViewAll === "function") return onViewAll();
+    const el = document.getElementById("all-reviews");
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  if (!list.length) return <div className="muted">لا توجد تعليقات بعد</div>;
 
   return (
-    <div className="carousel reviews-wrap" dir="rtl">
-      {/* أسهم مطابقة تماماً لما في ProductPage */}
-      <button
-        type="button"
-        className="car-arrow left"
-        onClick={() => jump(-1)}
-        aria-label="السابق"
-        title="السابق"
-      >
-        ‹
-      </button>
+    <div className="rv">
+      {/* سلايدر داخلي بنفس هيكل الأقسام الأخرى */}
+      <div className="carousel">
+        <button
+          className="car-arrow left"
+          onClick={() => jump(-1)}
+          disabled={!canL}
+          aria-label="يسار"
+        >
+          ‹
+        </button>
 
-      {/* نفس المسار المستخدم هناك: carousel-track + no-scrollbar */}
-      <div
-        ref={trackRef}
-        className="carousel-track no-scrollbar"
-        role="list"
-        style={{ gap: 12 }}
-      >
-        {list.map((r, i) => (
-          <article
-            key={i}
-            className="rv-item car-item"
-            role="listitem"
-            style={{ minWidth: 320, maxWidth: 340, flex: "0 0 auto" }}
-          >
-            <header className="rv-hdr">
-              <div className="rv-author">{r.user_name}</div>
-              <time className="rv-date">{r.created_at}</time>
-            </header>
+        <div
+          ref={trackRef}
+          className="carousel-track"
+          style={{ gap: 12 }}
+          dir="ltr"
+        >
+           {list.map((r) => (
+            <article key={`${r.user_name}-${r.created_at}-${r.comment?.slice(0,8)}`} className="review-card">
+              <header className="review-head">
+                <div className="review-avatar" aria-hidden="true">
+                  {initials(r.user_name)}
+                </div>
+                <div className="review-user">{r.user_name}</div>
+                <time className="review-date">{r.created_at}</time>
+              </header>
 
-            <div className="rv-stars" aria-label={`التقييم ${r.rating} من 5`}>
-              {"★".repeat(Math.round(r.rating)) + "☆".repeat(5 - Math.round(r.rating))}
-              <span style={{ marginInlineStart: 8, fontWeight: 700 }}>
-                {Number(r.rating).toFixed(1)}
-              </span>
-            </div>
+              <div
+                className="review-stars"
+                aria-label={`التقييم ${r.rating} من 5`}
+              >
+                <span className="stars">
+                  {"★".repeat(Math.round(r.rating)) +
+                    "☆".repeat(5 - Math.round(r.rating))}
+                </span>
+                <span className="stars-num">
+                  {Number(r.rating).toFixed(1)}
+                </span>
+              </div>
 
-            <p className="rv-body">{r.comment}</p>
-          </article>
-        ))}
+              <p className="review-text">{r.comment}</p>
+            </article>
+          ))}
+        </div>
+
+        <button
+          className="car-arrow right"
+          onClick={() => jump(1)}
+          disabled={!canR}
+          aria-label="يمين"
+        >
+          ›
+        </button>
       </div>
 
-      <button
-        type="button"
-        className="car-arrow right"
-        onClick={() => jump(1)}
-        aria-label="التالي"
-        title="التالي"
-      >
-        ›
-      </button>
+      <div className="rv-viewall">
+        <button className="btn-view-all" onClick={goAll}>
+          عرض كل التعليقات
+        </button>
+      </div>
     </div>
   );
+}
+
+function initials(name = "") {
+  const parts = String(name).trim().split(/\s+/).slice(0, 2);
+  return parts.length ? parts.map((p) => p[0]).join("").toUpperCase() : "؟";
 }

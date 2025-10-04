@@ -1,0 +1,54 @@
+/* ترويسة صفحة الأسئلة */
+.qa-headbar{padding:8px 0;border-bottom:1px solid var(--bd);margin-bottom:10px}
+.page-title{margin:0;font-size:18px;font-weight:800;color:var(--dark)}
+
+/* تخطيط الصفحة مثل التعليقات */
+.qa-page{
+  display:grid;
+  grid-template-columns: 28% 1fr;
+  gap:16px;
+  align-items:start;
+  padding:14px 0;
+}
+@media (max-width: 992px){
+  .qa-page{grid-template-columns:1fr}
+}
+
+/* شبكة الأسئلة */
+.qa-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap:12px;
+}
+
+/* بطاقة سؤال/جواب */
+.qa-card{
+  border:1px solid var(--bd);
+  border-radius:12px;
+  background:#fff;
+  padding:14px;
+  display:grid;
+  gap:8px;
+  min-height:160px;
+  transition:border-color .18s;
+}
+.qa-card:hover{border-color:var(--primary)}
+.qa-head{display:flex;align-items:center;gap:8px}
+.qa-q,.qa-a{font-weight:800;color:var(--dark);font-size:13px}
+.qa-date{margin-inline-start:auto;font-size:12px;color:var(--secondary)}
+.qa-text{margin:0;color:var(--dark);line-height:1.7}
+.qa-divider{height:1px;background:var(--bd);border-radius:1px;margin:4px 0}
+
+/* زر عرض الكل داخل قسم المنتج */
+.qa-viewall{display:grid;place-items:center;margin-top:10px}
+.btn-view-all{
+  background:#fff;
+  color:var(--secondary-base);
+  border:1px solid var(--secondary-base);
+  border-radius:999px;
+  padding:10px 16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .18s,color .18s,border-color .18s;
+}
+.btn-view-all:hover{background:var(--secondary-base);color:#fff;border-color:var(--secondary-base)}

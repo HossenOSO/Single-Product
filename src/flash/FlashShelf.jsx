@@ -3,19 +3,19 @@ import "./flash-shelf.css";
 
 export default function FlashShelf({ children }) {
   return (
-    <section className="fs-wrap fs-narrow" role="region" aria-labelledby="fs-title">
+    <section className="fs-wrap" role="region" aria-labelledby="fs-title">
       <div className="fs-head">
-        {/* يسار: أيقونة البرق من Icons8 + النص */}
+        {/* يسار: أيقونة برق مزدوج + النصوص */}
         <div className="fs-left">
-          <LightningIcon className="fs-bolt" aria-hidden="true" />
+          <DoubleLightningIcon className="fs-bolt" aria-hidden="true" />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <h2 id="fs-title" className="fs-title">البيع المفاجئ</h2>
             <span className="fs-sub">لا تضيع هذه الفرصة</span>
           </div>
         </div>
 
-        {/* يمين: الوقت + زر أيقونة */}
-        <div className="fs-right">
+        {/* يمين: الوقت + زر */}
+        <div className="fs-right" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div className="fs-count" aria-hidden="true">
             <TimeBox value="01" />
             <span className="fs-colon">:</span>
@@ -23,19 +23,18 @@ export default function FlashShelf({ children }) {
             <span className="fs-colon">:</span>
             <TimeBox value="01" />
           </div>
-
-          <button className="fs-viewall fs-icon" aria-label="اذهب الآن">
-            <ChevronLeftIcon className="fs-chevron" aria-hidden="true" />
-          </button>
+          <button className="fs-viewall">اذهب الآن</button>
         </div>
       </div>
 
-
+      <div className="fs-cards" tabIndex={0}>
+        {children}
+      </div>
     </section>
   );
 }
 
-/* صندوق الوقت */
+/* مكون صندوق الوقت */
 function TimeBox({ value }) {
   return (
     <div className="fs-tbox">
@@ -44,23 +43,18 @@ function TimeBox({ value }) {
   );
 }
 
-/* أيقونة البرق من الرابط الذي أرسلته */
-function LightningIcon({ className }) {
+/* أيقونة برق مزدوج */
+function DoubleLightningIcon({ className }) {
   return (
-    <img
-      className={`${className} fs-bolt-img`}
-      src="https://img.icons8.com/?size=100&id=5rjf4RBWzzU4&format=png&color=000000"
-      alt=""
-      aria-hidden="true"
-    />
-  );
-}
-
-/* سهم يسار للأيقونة فقط */
-function ChevronLeftIcon({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" width="18" height="18">
-      <path fill="currentColor" d="M15 6l-6 6 6 6" />
+    <svg
+      className={className}
+      viewBox="0 0 48 24"
+      width="28"
+      height="20"
+      fill="currentColor"
+    >
+      <path d="M13 2L3 14h7l-1 8 11-14h-7V2z" />
+      <path d="M35 2l-10 12h7l-1 8 11-14h-7V2z" />
     </svg>
   );
 }
