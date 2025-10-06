@@ -36,7 +36,7 @@ export default function FlashHub() {
             </button>
           </div>
 
-          {/* الطرف الآخر: نص ثابت فقط */}
+
           <h2 className="fh-title">بيع مفاجئ</h2>
         </div>
       </section>
