@@ -1,60 +1,14 @@
-:root {
-  --blue: #007bff;
-  --hov-blue: #1f6dc2;
-  --soft-blue: rgba(0, 123, 255, 0.15);
-  --secondary-base: #13814c;
-  --hov-secondary-base: #13814C;
-  --soft-secondary-base: rgba(255, 197, 25, 0.15);
-  --indigo: #6610f2;
-  --purple: #6f42c1;
-  --pink: #e83e8c;
-  --red: #dc3545;
-  --orange: #fd7e14;
-  --yellow: #ffc107;
-  --green: #28a745;
-  --teal: #20c997;
-  --cyan: #17a2b8;
-  --white: #fff;
-  --soft-white: #b5b5bf;
-  --gray: #6c757d;
-  --gray-dark: #343a40;
-  --primary: #b1154a;
-  --hov-primary: #c3144a;
-  --soft-primary: rgba(247, 123, 11, 0.15);
-  --secondary: #8f97ab;
-  --soft-secondary: rgba(143, 151, 171, 0.15);
-  --success: #0abb75;
-  --soft-success: rgba(10, 187, 117, 0.15);
-  --info: #25bcf1;
-  --soft-info: rgba(37, 188, 241, 0.15);
-  --warning: #ffc519;
-  --soft-warning: rgba(255, 197, 25, 0.15);
-  --danger: #ef486a;
-  --soft-danger: rgba(239, 72, 106, 0.15);
-  --light: #f2f3f8;
-  --soft-light: #dfdfe6;
-  --dark: #111723;
-  --soft-dark: #1b1b28;
-  --breakpoint-xs: 0;
-  --breakpoint-sm: 576px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 992px;
-  --breakpoint-xl: 1200px;
-  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
-}
-
-/* الخلفية تمتد على عرض الشاشة فقط */
+/* الخلفية تمتد على عرض الشاشة */
 .fh-band{
   position:relative;
   isolation:isolate;
-  padding-block:10px;
+  padding-block:12px;
 }
 .fh-band::before{
   content:"";
   position:absolute;
   inset:0;
-  margin-inline: calc(50% - 50vw);
+  margin-inline: calc(50% - 50vw); /* نزف عبر الشاشة */
   background:
     linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 42%),
     radial-gradient(720px 300px at 50% -6%, rgba(255,193,7,.18) 0%, rgba(255,193,7,0) 70%),
@@ -62,108 +16,138 @@
   box-shadow:0 6px 16px rgba(0,0,0,.08);
   z-index:-1;
 }
-.fh-band::after{
-  content:"";
-  position:absolute;
-  inset:auto 0 0 0;
-  margin-inline: calc(50% - 50vw);
-  height:3px;
-  background:linear-gradient(90deg, #ff755d 0%, #ff6b6b 100%);
-}
 
-/* المحتوى المتمركز */
+/* المحتوى يلتزم بعرض الصفحة */
 .fh-inner{
-  width:min(100%, 1200px);
+  width:min(100%, var(--page-w));
   margin-inline:auto;
-  padding-inline:16px;
+  padding-inline: clamp(12px, 4vw, 24px);
 }
 
-/* صف علوي بسيط */
-.fh-bar{
-  display:flex;
+/* رأس الشريط */
+.fh-header{
+  display:grid;
+  grid-template-columns: 1fr auto;
   align-items:center;
-  justify-content:space-between;
   gap:12px;
 }
 
-/* الطرف الذي يحتوي الخصومات والساعة والسهم — صغير وغير ضخم */
-.fh-ctrl{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-/* كبسولة خفيفة جداً */
-.chip-ghost{
-  background:#fff;
-  color:var(--soft-dark);
-  border:1px solid #e9e9ef;
-  padding:6px 10px;
-  border-radius:999px;
-  font-weight:700;
-  line-height:1;
-  white-space:nowrap;
-  box-shadow:0 2px 6px rgba(0,0,0,.05);
-}
-
-/* ساعة مصغّرة */
-.chip-clock{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  padding:4px 6px;
-  border:1px solid #e9e9ef;
-  border-radius:999px;
-  background:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,.05);
-}
-.seg{
-  min-width:28px;
-  height:26px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  background:#fff;
-  border:1px solid #ececf2;
-  border-radius:6px;
-  font-size:13px;
-  font-weight:800;
-  font-variant-numeric:tabular-nums;
-  color:#1b1b28;
-}
-.colon{ font-weight:800; color:var(--primary); }
-
-/* زر سهم صغير */
-.icon-btn{
-  width:28px; height:28px;
-  display:inline-flex;
-  align-items:center; justify-content:center;
-  border:none;
-  border-radius:999px;
-  background:rgba(0,0,0,.08);
-  color:var(--soft-dark);
-}
-.arrow{ width:16px; height:16px; display:block; }
-html[dir="rtl"] .arrow{ transform:scaleX(-1); }
-
-/* الطرف الآخر — نص فقط */
+/* عنوان كبير بهوية واضحة */
 .fh-title{
   margin:0;
   font-weight:800;
-  font-size:18px;
+  font-size: clamp(var(--fs-22), 3.2vw, var(--fs-30));
   color:#fff;
   white-space:nowrap;
 }
 
+/* مجموعة التبويبات */
+.fh-tabs{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+/* الكبسولات العامة */
+.fh-tabs .tab{
+  --h: 40px;
+  --pad-x: 14px;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  height:var(--h);
+  padding:0 var(--pad-x);
+  border:1px solid #e6e8ef;
+  border-radius:999px;
+  background:#fff;
+  color:#111;
+  cursor:pointer;
+  transition:border-color .18s, box-shadow .18s, transform .12s;
+}
+.fh-tabs .tab:focus-visible{
+  outline:0;
+  box-shadow:0 0 0 3px rgba(0,120,255,.25);
+}
+.fh-tabs .tab:hover{
+  border-color:var(--primary);
+}
+.fh-tabs .tab[aria-selected="true"]{
+  border-color:var(--primary);
+  box-shadow:0 2px 10px rgba(15,102,15,.12);
+}
+
+/* نص العناوين */
+.fh-tabs .t-label{
+  font-weight:700;
+  font-size:15px;
+  line-height:1;
+  white-space:nowrap;
+}
+
+/* عداد داخل الكبسولة */
+.fh-tabs .t-time{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  direction:ltr; /* لضبط الأرقام والقولون */
+}
+.fh-tabs .t-time .d{
+  min-width:28px;
+  height:26px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  background:#f6f7fb;
+  font-variant-numeric:tabular-nums;
+  font-weight:800;
+  font-size:14px;
+  line-height:1;
+}
+.fh-tabs .t-time .colon{
+  opacity:.7;
+  font-weight:700;
+  translate: 0 -1px;
+}
+
+/* تبويب 3 ساعات — وهج خفيف */
+.fh-tabs .tab-3h{ position:relative; }
+.fh-tabs .tab-3h::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:inherit;
+  background:
+    radial-gradient(120px 40px at 10% 50%, rgba(15,102,15,.18), transparent 60%),
+    radial-gradient(120px 40px at 90% 50%, rgba(15,102,15,.10), transparent 60%);
+  z-index:-1;
+  filter:blur(8px);
+  opacity:.6;
+  transition:opacity .2s;
+}
+.fh-tabs .tab-3h:hover::before{ opacity:.85 }
+
+/* تبويب 24 ساعة — كبسولة بيضاء مع سهم */
+.fh-tabs .tab-24 .chev{
+  margin-inline-start:2px;
+}
+.fh-tabs .tab-24:hover .chev{
+  transform:translateX(-2px);
+  transition:transform .16s;
+}
+.chev{ width:18px; height:18px; display:block; }
+html[dir="rtl"] .chev{ transform: scaleX(-1); }
+
 /* المواعيد أسفل الشريط */
 .fh-sched{
   background:#fff;
-  border-bottom:1px solid #eee;
+  border-bottom:1px solid var(--bd);
 }
 .fh-sched-inner{
-  width:min(100%, 1200px);
+  width:min(100%, var(--page-w));
   margin-inline:auto;
-  padding:12px 16px 14px;
+  padding:12px clamp(12px, 4vw, 24px) 14px;
   display:flex;
   gap:12px;
   overflow-x:auto;
@@ -171,24 +155,32 @@ html[dir="rtl"] .arrow{ transform:scaleX(-1); }
 .fh-slot{
   flex:0 0 auto;
   min-width:210px;
-  border:1px solid #eee;
-  border-radius:12px;
+  border:1px solid var(--bd);
+  border-radius: var(--r);
   padding:10px 12px;
   background:#fff;
   color:var(--soft-dark);
-  transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease;
+  transition: box-shadow .15s ease, border-color .15s ease, transform .15s ease;
 }
-.fh-slot:hover{ border-color:#ddd; box-shadow:0 4px 12px rgba(0,0,0,.06); transform:translateY(-1px); }
-.fh-slot.is-active{ border-color:var(--warning); box-shadow:0 6px 14px rgba(0,0,0,.08); }
+.fh-slot:hover{
+  border-color:#ddd;
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+  transform: translateY(-1px);
+}
+.fh-slot.is-active{
+  border-color: var(--warning);
+  box-shadow:0 6px 14px rgba(0,0,0,.08);
+}
 .fh-slot-time{ font-weight:700; color:var(--soft-dark); margin-bottom:4px; }
-.fh-slot-note{ font-size:12px; color:#888; }
+.fh-slot-note{ font-size: var(--fs-12); color:#888; }
 .fh-slot-note.ok{ color:#19a45b; }
 
 /* استجابة */
 @media (max-width:768px){
-  .seg{ min-width:26px; height:24px; font-size:12px; }
-  .chip-ghost{ padding:5px 9px; }
-  .chip-clock{ padding:3px 5px; }
-  .icon-btn{ width:26px; height:26px; }
-  .fh-title{ font-size:17px; }
+  .fh-header{ grid-template-columns: 1fr; row-gap:10px }
+  .fh-tabs{ justify-content:center; flex-wrap:wrap }
+  .fh-tabs .tab{ --h: 36px; --pad-x: 12px }
+  .fh-tabs .t-label{ font-size:14px }
+  .fh-tabs .t-time .d{ min-width:24px; height:24px; font-size:13px }
+  .tab-24{ padding:0 14px }
 }

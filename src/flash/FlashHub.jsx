@@ -2,10 +2,9 @@ import React from "react";
 import "./flash-hub.css";
 
 export default function FlashHub() {
-  // عدّ شكلي
+  // عدّ شكلي الآن
   const t = ["00", "21", "00"];
 
-  // مواعيد شكلية
   const slots = [
     { range: "12:00 - 15:00", note: "نشط الآن", active: true },
     { range: "15:00 - 18:00", note: "بعد 22 دقيقة" },
@@ -16,28 +15,40 @@ export default function FlashHub() {
 
   return (
     <>
-      {/* خلفية ممتدة — محتوى متمركز */}
+      {/* شريط بخلفية ممتدة عبر الشاشة */}
       <section className="fh-band" role="region" aria-label="Flash Hub">
-        <div className="fh-inner fh-bar">
-          {/* الطرف الأيمن: مجموعة صغيرة فقط */}
-          <div className="fh-ctrl">
-            <span className="chip-ghost">خصومات 24 ساعة</span>
+        <div className="fh-inner">
+          <div className="fh-header">
+            <h2 className="fh-title">بيع مفاجئ</h2>
 
-            <div className="chip-clock" aria-hidden="true">
-              <span className="seg">{t[0]}</span>
-              <span className="colon">:</span>
-              <span className="seg">{t[1]}</span>
-              <span className="colon">:</span>
-              <span className="seg">{t[2]}</span>
-            </div>
+    <div className="fh-tabs" role="tablist" aria-label="أنواع الخصومات">
+      <button
+        type="button"
+        role="tab"
+        aria-selected="true"
+        className="tab tab-3h"
+      >
+        <span className="t-label">خصومات 3 ساعات</span>
+        <span className="t-time" aria-live="polite">
+          <span className="d">{t[0]}</span>
+          <span className="colon">:</span>
+          <span className="d">{t[1]}</span>
+          <span className="colon">:</span>
+          <span className="d">{t[2]}</span>
+        </span>
+      </button>
 
-            <button type="button" className="icon-btn" aria-label="اذهب">
-              <Arrow className="arrow" />
-            </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected="false"
+        className="tab tab-24"
+      >
+        <span className="t-label">خصومات 24 ساعة</span>
+        <Chevron className="chev"/>
+      </button>
+    </div>
           </div>
-
-
-          <h2 className="fh-title">بيع مفاجئ</h2>
         </div>
       </section>
 
@@ -56,9 +67,9 @@ export default function FlashHub() {
   );
 }
 
-function Arrow({ className }) {
+function Chevron({ className }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
       <path fill="currentColor" d="M9 6l6 6-6 6" />
     </svg>
   );
