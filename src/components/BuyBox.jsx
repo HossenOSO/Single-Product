@@ -1,18 +1,36 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 
 export default function BuyBox({ product, reviewCount = 0, qaCount = 0, onNavigate }) {
-  const [mem, setMem] = useState(product.memories?.[0]);
+  const [mem, setMem]     = useState(product.memories?.[0]);
   const [color, setColor] = useState(product.colors?.[0]);
-  const [qty, setQty] = useState(1);
-  const [fav, setFav] = useState(false);
+  const [qty, setQty]     = useState(1);
+  const [fav, setFav]     = useState(false);
 
   const ratingVal = Number(product.rating?.value ?? 0);
   const ratingCnt = Number(product.rating?.count ?? reviewCount ?? 0);
+  const pid = product?.id;
+
+  // تنقّل داخلي مستقل عند عدم وجود pid (يفضّل استقلال المكوّن)
+  const scrollToSection = useCallback((target) => {
+    const id = target === "qa" ? "sec-qa" : "sec-reviews";
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: "smooth" });
+  }, []);
+
+  const go = (target) => {
+    // لو المالك مرّر onNavigate نستخدمه؛ غير ذلك نعتمد السلوك الداخلي
+    if (typeof onNavigate === "function") return onNavigate(target);
+    scrollToSection(target);
+  };
 
   return (
     <div className="buy">
       <h1 className="p-title">{product.title}</h1>
 
+      {/* سطر التقييم + الروابط */}
       <div className="rating-row" aria-label={`التقييم ${ratingVal} من 5`}>
         <span className="stars">
           {"★".repeat(Math.round(ratingVal)) + "☆".repeat(5 - Math.round(ratingVal))}
@@ -22,101 +40,113 @@ export default function BuyBox({ product, reviewCount = 0, qaCount = 0, onNaviga
 
         <span className="divider">|</span>
 
-        <button
-          type="button"
-          className="link-sm"
-          onClick={() => onNavigate && onNavigate("reviews")}
-        >
-          التقييمات ({reviewCount})
-        </button>
+        {pid ? (
+          <Link className="link-sm" to={`/product/${pid}/reviews`}>
+            التقييمات ({reviewCount})
+          </Link>
+        ) : (
+          <button type="button" className="link-sm" onClick={() => go("reviews")}>
+            التقييمات ({reviewCount})
+          </button>
+        )}
 
         <span className="dot">•</span>
 
-        <button
-          type="button"
-          className="link-sm"
-          onClick={() => onNavigate && onNavigate("qa")}
-        >
-          سؤال وجواب ({product.qaCount ?? 0})
-        </button>
+        {pid ? (
+          <Link className="link-sm" to={`/product/${pid}/qa`}>
+            سؤال وجواب ({product.qaCount ?? qaCount ?? 0})
+          </Link>
+        ) : (
+          <button type="button" className="link-sm" onClick={() => go("qa")}>
+            سؤال وجواب ({product.qaCount ?? qaCount ?? 0})
+          </button>
+        )}
       </div>
 
+      {/* السعر */}
       <div className="price">
         <div className="price-now">
-          {Number(product.price).toLocaleString("tr-TR")} <span>{product.currency}</span>
+          {formatNumber(product.price)} <span>{product.currency || ""}</span>
         </div>
       </div>
 
-      <fieldset className="variant">
-        <legend>السعة</legend>
-        {product.memories?.map((m) => (
-          <label className="pill" key={m}>
-            <input
-              type="radio"
-              name="mem"
-              value={m}
-              checked={mem === m}
-              onChange={() => setMem(m)}
-            />
-            <span>{m}</span>
-          </label>
-        ))}
-      </fieldset>
+      {/* السعة */}
+      {Array.isArray(product.memories) && product.memories.length > 0 && (
+        <div className="opts">
+          <div className="lbl">السعة</div>
+          <div className="pills">
+            {product.memories.map((m) => (
+              <button
+                key={m}
+                className={`pill ${mem === m ? "is-on" : ""}`}
+                onClick={() => setMem(m)}
+                type="button"
+              >
+                {m}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
-      <fieldset className="variant">
-        <legend>اللون</legend>
-        {product.colors?.map((c) => (
-          <label className="swatch" key={c.hex} title={c.name}>
-            <input
-              type="radio"
-              name="color"
-              value={c.hex}
-              checked={color?.hex === c.hex}
-              onChange={() => setColor(c)}
-            />
-            <span style={{ "--sw": c.hex }} />
-          </label>
-        ))}
-      </fieldset>
+      {/* الألوان */}
+      {Array.isArray(product.colors) && product.colors.length > 0 && (
+        <div className="opts">
+          <div className="lbl">اللون</div>
+          <div className="swatches">
+            {product.colors.map((c) => (
+              <button
+                key={c.hex}
+                className={`sw ${color?.hex === c.hex || color === c ? "is-on" : ""}`}
+                style={{ background: c.hex }}
+                onClick={() => setColor(c)}
+                aria-label={c.name}
+                title={c.name}
+                type="button"
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
+      {/* الكمية */}
       <div className="qty">
-        <button className="qty-btn" onClick={() => setQty((v) => Math.max(1, v - 1))}>−</button>
-        <input
-          type="number"
-          min="1"
-          value={qty}
-          onChange={(e) => setQty(Math.max(1, Number(e.target.value || 1)))}
-        />
-        <button className="qty-btn" onClick={() => setQty((v) => v + 1)}>+</button>
-        <span className="stock">متاح {product.stock}</span>
-      </div>
-
-      {/* أزرار أعرض + أيقونة المفضلة بعدها مباشرة */}
-      <div className="ctas ctas-wide">
-        <button className="btn btn-buy btn-wide">شراء الآن</button>
-        <button className="btn btn-cart btn-wide">أضف إلى السلة</button>
-
         <button
+          className="btn"
+          onClick={() => setQty((v) => Math.min(99, v + 1))}
+          aria-label="زيادة"
           type="button"
-          className={`btn-fav ${fav ? "is-on" : ""}`}
-          aria-pressed={fav}
-          aria-label="أضف إلى المفضلة"
-          onClick={() => setFav((v) => !v)}
-          title="أضف إلى المفضلة"
         >
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-            <path
-              d="M12.1 8.64l-.1.1-.11-.1C9.14 6.1 5.6 6.28 3.3 8.6a4.46 4.46 0 000 6.32l7.67 7.07a1 1 0 001.36 0l7.67-7.07a4.46 4.46 0 000-6.32c-2.3-2.32-5.84-2.5-8.69 0z"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          +
+        </button>
+        <div className="val" aria-live="polite">{qty}</div>
+        <button
+          className="btn"
+          onClick={() => setQty((v) => Math.max(1, v - 1))}
+          aria-label="إنقاص"
+          type="button"
+        >
+          –
         </button>
       </div>
 
+      {/* الأزرار العريضة */}
+      <div className="buttons">
+        <button className="btn-cart" type="button">أضف إلى السلة</button>
+        <button className="btn-buy" type="button">اشترِ الآن</button>
+        <button
+          className={`btn-fav ${fav ? "is-on" : ""}`}
+          type="button"
+          aria-pressed={fav}
+          aria-label={fav ? "إزالة من المفضلة" : "أضف إلى المفضلة"}
+          title={fav ? "إزالة من المفضلة" : "أضف إلى المفضلة"}
+          onClick={() => setFav((v) => !v)}
+        >
+          ♥
+        </button>
+      </div>
+
+      {/* شارات */}
       <ul className="badges">
         <li>إرجاع 14 يوم</li>
         <li>دفع آمن</li>
@@ -124,4 +154,8 @@ export default function BuyBox({ product, reviewCount = 0, qaCount = 0, onNaviga
       </ul>
     </div>
   );
+}
+
+function formatNumber(v) {
+  return Number(v || 0).toLocaleString("ar-EG");
 }

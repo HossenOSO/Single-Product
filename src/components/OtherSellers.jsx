@@ -1,45 +1,64 @@
 // src/components/OtherSellers.jsx
-export default function OtherSellers({ sellers = [] }) {
+export default function OtherSellers({ sellers = [], currency = "" }) {
   if (!Array.isArray(sellers) || sellers.length === 0) return null;
+
+  const fmt = (v) => Number(v || 0).toLocaleString("ar-EG");
+
+  const keyFor = (s, i) =>
+    `${s?.name || "store"}|${s?.offerUrl || ""}|${s?.storeUrl || ""}|${i}`;
 
   return (
     <>
-      {/* العنوان خارج الصندوق */}
+      {/* العنوان خارج الكرت */}
       <div className="os-title">بائعون آخرون لهذا المنتج</div>
 
-      {/* الصندوق المبسّط */}
+      {/* الكرت */}
       <div className="os-card">
         <ul className="os-list">
-          {sellers.map((s, i) => (
-            <li key={i} className="os-item">
-              <a href={s.storeUrl} className="os-store" title={s.name}>
-                <img
-                  className="os-logo"
-                  src={s.logo}
-                  alt=""
-                  onError={(e)=>{ e.currentTarget.style.visibility="hidden"; }}
-                />
-                <span className="os-name">{s.name}</span>
-              </a>
+          {sellers.map((s, i) => {
+            const price = typeof s.price === "number" ? s.price : null;
+            const showPrice = price != null;
+            const href = s.offerUrl || s.storeUrl || "#";
 
-              <div className="os-meta">
-                <span className="os-price">
-                  {Number(s.price).toLocaleString("tr-TR")} <small>TRY</small>
-                </span>
-                {typeof s.rating === "number" && (
-                  <span className="os-rate" title="تقييم البائع">★ {s.rating.toFixed(1)}</span>
-                )}
-              </div>
+            return (
+              <li key={keyFor(s, i)} className="os-item">
+                <a href={s.storeUrl || "#"} className="os-store" title={s.name || ""}>
+                  <img
+                    className="os-logo"
+                    src={s.logo}
+                    alt={s.name ? `شعار ${s.name}` : "شعار المتجر"}
+                    onError={(e) => {
+                      e.currentTarget.style.visibility = "hidden";
+                    }}
+                  />
+                  <span className="os-name">{s.name || "متجر"}</span>
+                </a>
 
-              <div className="os-row">
-                {s.shipping && <span className="os-badge">{s.shipping}</span>}
-                {s.delivery && <span className="os-badge">{s.delivery}</span>}
-              </div>
+                <div className="os-meta">
+                  {showPrice && (
+                    <span className="os-price">
+                      {fmt(price)} {currency && <small>{currency}</small>}
+                    </span>
+                  )}
+                  {typeof s.rating === "number" && (
+                    <span className="os-rate" title="تقييم البائع">
+                      ★ {s.rating.toFixed(1)}
+                    </span>
+                  )}
+                </div>
 
-              {/* زر بحدّ محايد ويمتلئ عند الهوفر وفق الهوية */}
-              <a href={s.offerUrl || s.storeUrl} className="os-btn">اذهب للعرض</a>
-            </li>
-          ))}
+                <div className="os-row">
+                  {s.shipping && <span className="os-badge">{s.shipping}</span>}
+                  {s.delivery && <span className="os-badge">{s.delivery}</span>}
+                </div>
+
+                {/* زر بالهوية: إطار ثم امتلاء عند الهوفر */}
+                <a href={href} className="os-btn">
+                  اذهب للعرض
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </>

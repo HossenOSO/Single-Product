@@ -1,34 +1,79 @@
-/* سلايدر عام بدون شريط تمرير */
-.carousel{position:relative}
-.carousel-track{
-  display:flex;
-  overflow-x:auto;
-  scroll-behavior:smooth;
-  padding:2px 4px 6px;
-  -ms-overflow-style:none;    /* IE/Edge */
-  scrollbar-width:none;       /* Firefox */
-}
-.carousel-track::-webkit-scrollbar{display:none} /* WebKit */
+/* =========================
+   carousel.css  (Core Only)
+   يستخدم الكلاسات الموحّدة:
+   .carousel           حاوية السلايدر
+   .carousel-track     المسار الأفقي
+   .car-item           عنصر داخل المسار
+   .car-arrow.left     سهم يسار
+   .car-arrow.right    سهم يمين
+   ========================= */
 
-/* عرض عناصر السلايدر الافتراضي */
-.car-item{min-width:220px;max-width:220px;flex:0 0 auto}
+/* الحاوية الجذرية للسلايدر */
+.carousel {
+  position: relative;
+}
+
+/* المسار: محاذاة أفقية ناعمة وإخفاء شريط التمرير */
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 2px 4px 6px;
+
+  /* إخفاء الشريط */
+  -ms-overflow-style: none;     /* IE/Edge */
+  scrollbar-width: none;        /* Firefox */
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+
+/* عنصر داخل المسار
+   ملاحظة: عرض العنصر يحدد من المكوّن inline (min/max-width)
+   حسب القسم: 220 للمنتجات، 360 للتعليقات، 420 للـ Q&A …إلخ
+*/
+.car-item {
+  flex: 0 0 auto;
+}
 
 /* الأسهم */
-.car-arrow{
-  position:absolute; top:50%; transform:translateY(-50%);
-  width:36px; height:36px; border-radius:50%;
-  display:grid; place-items:center;
-  border:1px solid var(--bd); background:#fff; color:var(--dark);
-  cursor:pointer; opacity:.95;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-  transition:background .15s,border-color .15s,color .15s,transform .12s;
-  z-index:1;
-}
-.car-arrow.left{inset-inline-start:-8px}
-.car-arrow.right{inset-inline-end:-8px}
-.car-arrow:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:translateY(-50%) scale(1.03)}
-.car-arrow:disabled{opacity:.35;cursor:default}
+.car-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
 
-/* إخفاء الشريط عند الحاجة */
-.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
-.no-scrollbar::-webkit-scrollbar{display:none}
+  border: 1px solid var(--bd);
+  background: #fff;
+  color: var(--dark);
+  cursor: pointer;
+  opacity: .95;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+
+  transition: background .15s, border-color .15s, color .15s, transform .12s;
+  z-index: 1;
+}
+
+.car-arrow.left  { inset-inline-start: -8px; }
+.car-arrow.right { inset-inline-end:  -8px; }
+
+.car-arrow:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  transform: translateY(-50%) scale(1.03);
+}
+
+.car-arrow:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+/* مساعد اختياري لإخفاء الشريط لمن يستعمله */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }

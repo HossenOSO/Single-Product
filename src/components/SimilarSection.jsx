@@ -1,10 +1,16 @@
+// src/components/SimilarSection.jsx
 import Section from "./Section.jsx";
 import ProductCarousel from "./ProductCarousel.jsx";
 
-export default function SimilarSection({ items }) {
+export default function SimilarSection({ items = [] }) {
   return (
     <Section title="منتجات مماثلة">
-      <ProductCarousel items={items} itemWidth={220} gap={12} />
+      <ProductCarousel
+        items={items}
+        itemWidth={220}
+        gap={12}
+        /* renderItem اختياري — إن لم تزوده سيستخدم البطاقة الافتراضية داخل ProductCarousel */
+      />
     </Section>
   );
 }

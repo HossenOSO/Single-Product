@@ -1,54 +1,107 @@
 /* ترويسة صفحة الأسئلة */
-.qa-headbar{padding:8px 0;border-bottom:1px solid var(--bd);margin-bottom:10px}
-.page-title{margin:0;font-size:18px;font-weight:800;color:var(--dark)}
+.qa-headbar{ padding:8px 0; border-bottom:1px solid var(--bd); margin-bottom:10px }
+.page-title{ margin:0; font-size:18px; font-weight:800; color:var(--dark) }
 
-/* تخطيط الصفحة مثل التعليقات */
 .qa-page{
-  display:grid;
-  grid-template-columns: 28% 1fr;
-  gap:16px;
-  align-items:start;
-  padding:14px 0;
+  display:grid; grid-template-columns: 28% 1fr; gap:16px; align-items:start; padding:14px 0;
 }
-@media (max-width: 992px){
-  .qa-page{grid-template-columns:1fr}
-}
+@media (max-width: 992px){ .qa-page{ grid-template-columns:1fr } }
 
-/* شبكة الأسئلة */
-.qa-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap:12px;
-}
+.qa-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:12px }
 
-/* بطاقة سؤال/جواب */
+/* بطاقة سؤال/جواب عامة */
 .qa-card{
-  border:1px solid var(--bd);
-  border-radius:12px;
-  background:#fff;
-  padding:14px;
-  display:grid;
-  gap:8px;
-  min-height:160px;
+  border:1px solid var(--bd); border-radius:12px; background:#fff;
+  padding:14px; display:grid; gap:8px; min-height:160px;
   transition:border-color .18s;
 }
-.qa-card:hover{border-color:var(--primary)}
-.qa-head{display:flex;align-items:center;gap:8px}
-.qa-q,.qa-a{font-weight:800;color:var(--dark);font-size:13px}
-.qa-date{margin-inline-start:auto;font-size:12px;color:var(--secondary)}
-.qa-text{margin:0;color:var(--dark);line-height:1.7}
-.qa-divider{height:1px;background:var(--bd);border-radius:1px;margin:4px 0}
+.qa-card:hover{ border-color:var(--primary) }
+.qa-head{ display:flex; align-items:center; gap:8px }
+.qa-q,.qa-a{ font-weight:800; color:var(--dark); font-size:13px }
+.qa-date{ margin-inline-start:auto; font-size:12px; color:var(--secondary) }
+.qa-text{ margin:0; color:var(--dark); line-height:1.7 }
+.qa-divider{ height:1px; background:var(--bd); border-radius:1px; margin:4px 0 }
 
 /* زر عرض الكل داخل قسم المنتج */
-.qa-viewall{display:grid;place-items:center;margin-top:10px}
+.qa-viewall{ display:grid; place-items:center; margin-top:10px }
 .btn-view-all{
-  background:#fff;
-  color:var(--secondary-base);
-  border:1px solid var(--secondary-base);
-  border-radius:999px;
-  padding:10px 16px;
-  font-weight:700;
-  cursor:pointer;
+  background:#fff; color:var(--secondary-base); border:1px solid var(--secondary-base); border-radius:999px;
+  padding:10px 16px; font-weight:700; cursor:pointer;
   transition:background .18s,color .18s,border-color .18s;
 }
-.btn-view-all:hover{background:var(--secondary-base);color:#fff;border-color:var(--secondary-base)}
+.btn-view-all:hover{ background:var(--secondary-base); color:#fff; border-color:var(--secondary-base) }
+
+/* محادثة داخل البطاقة/النافذة */
+.qa-card .qa-open-hint{ margin-top:8px; font-size:12px; color:var(--secondary) }
+
+.qa-more{ display:flex; align-items:center; gap:6px; color:var(--secondary); font-size:12px }
+.qa-more-dot{ opacity:.6 }
+
+.qa-thread{ display:grid; gap:10px; max-height:48vh; overflow:auto; padding-inline:2px; }
+
+.qa-msg{ display:grid; gap:4px; }
+.qa-msg .qa-time{ font-size:12px; color:var(--secondary); }
+
+.qa-bubble{
+  border:1px solid var(--bd); border-radius:10px; background:#fff; padding:10px 12px; line-height:1.7;
+}
+.qa-msg.buyer .qa-bubble{ border-color:var(--primary); background:var(--soft-primary); }
+.qa-msg.seller .qa-bubble{ border-color:var(--bd); background:#fff; }
+
+.qa-follow{
+  display:grid; grid-template-columns: 1fr auto; gap:8px; margin-top:8px;
+}
+.qa-follow .add-input{
+  height:36px; border:1px solid var(--bd); border-radius:10px; padding:0 12px; background:#fff;
+}
+.qa-follow .btn-add{
+  height:36px; padding:0 16px; border-radius:10px; border:0; background:var(--hov-primary); color:#fff; font-weight:700;
+}
+.qa-follow .btn-add:hover{ background:var(--primary); }
+
+/* تحكّم حجم بطاقات السلايدر داخل صفحة المنتج */
+:root{
+  --qa-card-w: 420px;
+  --qa-card-pad: 16px;
+  --qa-title-fs: 15px;
+  --qa-body-fs: 14px;
+}
+.qa-sec .qa-card{
+  min-width: var(--qa-card-w);
+  max-width: var(--qa-card-w);
+  padding: var(--qa-card-pad);
+  display:grid; gap:8px;
+}
+.qa-sec .qa-card .qa-q{ font-size: var(--qa-title-fs); line-height:1.7; color:var(--dark); }
+.qa-sec .qa-card .qa-a{ font-size: var(--qa-body-fs);  line-height:1.75; color:var(--dark); }
+.qa-sec .qa-card .qa-date{ font-size:12px; color:var(--secondary) }
+.qa-sec .qa-card .qa-head{ display:flex; align-items:center; gap:8px }
+
+.qa-sec .qa-card .qa-open-hint{ font-size:12px; color:var(--secondary) }
+.qa-sec .qa-card .qa-more{ display:flex; align-items:center; gap:6px; color:var(--secondary); font-size:12px }
+
+@media (max-width: 768px){
+  .qa-sec .qa-card{ min-width:88vw; max-width:88vw; }
+}
+
+/* أفاتار وميتا */
+.qa-sec .qa-card .qa-block{ display:grid; gap:6px; }
+.qa-sec .qa-card .qa-block.qa-answer{ margin-top:6px; }
+.qa-sec .qa-card .qa-avatar{
+  width:32px; height:32px; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--soft-primary); color:var(--primary);
+  font-weight:800; font-size:12px; flex:0 0 auto; border:1px solid var(--bd);
+}
+.qa-sec .qa-card .qa-avatar.seller{ background:#fff; color:var(--dark); }
+.qa-sec .qa-card .qa-meta{ display:grid; line-height:1.2; }
+.qa-sec .qa-card .qa-name{ font-weight:800; color:var(--dark); font-size:13px; }
+.qa-sec .qa-card .qa-date{ font-size:12px; color:var(--secondary); }
+.qa-sec .qa-card .qa-q.qa-text,
+.qa-sec .qa-card .qa-a.qa-text{ margin:0; color:var(--dark); line-height:1.75; }
+.qa-sec .qa-card .qa-q.qa-text{
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+.qa-sec .qa-card .qa-a.qa-text{
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}

@@ -1,32 +1,68 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 
 export default function Gallery({ images = [] }) {
+  // تطبيع بسيط للصور (تأمين src/alt) وتفادي القيم الفارغة
+  const pics = useMemo(
+    () =>
+      (Array.isArray(images) ? images : [])
+        .filter(Boolean)
+        .map((im, i) => ({
+          src: im?.src || "",
+          alt: im?.alt || `صورة ${i + 1}`,
+        })),
+    [images]
+  );
+
+  const total = pics.length || 1;
   const [idx, setIdx] = useState(0);
   const [isFav, setIsFav] = useState(false);
   const [inCompare, setInCompare] = useState(false);
 
-  const total = images.length || 1;
-  const safeIdx = (i) => ((i % total) + total) % total;
+  // تأمين الفهرس ضمن المدى
+  const safeIdx = useCallback(
+    (i) => {
+      const t = total || 1;
+      return ((i % t) + t) % t;
+    },
+    [total]
+  );
 
-  const goNext = useCallback(() => setIdx((i) => safeIdx(i + 1)), [total]);
-  const goPrev = useCallback(() => setIdx((i) => safeIdx(i - 1)), [total]);
+  const goNext = useCallback(() => setIdx((i) => safeIdx(i + 1)), [safeIdx]);
+  const goPrev = useCallback(() => setIdx((i) => safeIdx(i - 1)), [safeIdx]);
 
+  // في حال تغيّرت قائمة الصور وأصبح idx خارج المدى، نثبّته
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "ArrowRight") goPrev();
-      if (e.key === "ArrowLeft") goNext();
-    };
-    const root = document.querySelector(".gallery");
-    if (root) root.addEventListener("keydown", onKey);
-    return () => {
-      if (root) root.removeEventListener("keydown", onKey);
-    };
-  }, [goNext, goPrev]);
+    setIdx((i) => safeIdx(i));
+  }, [pics.length, safeIdx]);
 
-  const current = images[idx]?.src || "";
+  // التعامل مع لوحة المفاتيح داخل المعرض فقط
+  const onKeyDown = (e) => {
+    if (e.key === "ArrowRight") {
+      // في RTL: السهم اليمين يُعيد للصورة السابقة
+      e.preventDefault();
+      e.stopPropagation();
+      goPrev();
+    }
+    if (e.key === "ArrowLeft") {
+      // في RTL: السهم اليسار يتقدّم للصورة التالية
+      e.preventDefault();
+      e.stopPropagation();
+      goNext();
+    }
+  };
+
+  const current = pics[idx]?.src || "";
+  const currentAlt = pics[idx]?.alt || "صورة المنتج";
+  const single = pics.length <= 1;
 
   return (
-    <div className="gallery" role="region" aria-label="صور المنتج" tabIndex={0}>
+    <div
+      className="gallery"
+      role="region"
+      aria-label="صور المنتج"
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+    >
       <div className="image img-wrap">
         {/* أيقونات أعلى الصورة */}
         <div className="img-icos" aria-label="أفعال الصورة">
@@ -34,9 +70,9 @@ export default function Gallery({ images = [] }) {
             type="button"
             className={`img-ico ico-wish ${isFav ? "is-on" : ""}`}
             aria-pressed={isFav}
-            aria-label="أضف إلى المفضلة"
+            aria-label={isFav ? "إزالة من المفضلة" : "أضف إلى المفضلة"}
             onClick={() => setIsFav((v) => !v)}
-            title="أضف إلى المفضلة"
+            title={isFav ? "إزالة من المفضلة" : "أضف إلى المفضلة"}
           >
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path
@@ -54,9 +90,9 @@ export default function Gallery({ images = [] }) {
             type="button"
             className={`img-ico ico-compare ${inCompare ? "is-on" : ""}`}
             aria-pressed={inCompare}
-            aria-label="أضف إلى المقارنة"
+            aria-label={inCompare ? "إزالة من المقارنة" : "أضف إلى المقارنة"}
             onClick={() => setInCompare((v) => !v)}
-            title="أضف إلى المقارنة"
+            title={inCompare ? "إزالة من المقارنة" : "أضف إلى المقارنة"}
           >
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path
@@ -71,7 +107,7 @@ export default function Gallery({ images = [] }) {
           </button>
         </div>
 
-        {/* أسهم التنقّل */}
+        {/* أسهم التنقّل (تعطيل عند صورة واحدة) */}
         <div className="img-nav" aria-hidden="true">
           <button
             type="button"
@@ -79,6 +115,7 @@ export default function Gallery({ images = [] }) {
             onClick={goPrev}
             title="السابق"
             aria-label="السابق"
+            disabled={single}
           >
             <svg viewBox="0 0 24 24" width="20" height="20">
               <path
@@ -97,6 +134,7 @@ export default function Gallery({ images = [] }) {
             onClick={goNext}
             title="التالي"
             aria-label="التالي"
+            disabled={single}
           >
             <svg viewBox="0 0 24 24" width="20" height="20">
               <path
@@ -111,33 +149,28 @@ export default function Gallery({ images = [] }) {
           </button>
         </div>
 
-        <img src={current} alt={images[idx]?.alt || "صورة المنتج"} />
+        <img src={current} alt={currentAlt} />
       </div>
 
       {/* مصغّرات أسفل الصورة بدون سكرول */}
-      {images.length > 1 && (
-        <ul
-          className="thumbs thumbs-grid"
-          role="listbox"
-          aria-label="مصغّرات الصور"
-        >
-          {images.map((img, i) => (
-            <li
-              key={i}
-              role="option"
-              aria-selected={idx === i ? "true" : "false"}
-            >
-              <button
-                type="button"
-                className={`thumb ${idx === i ? "is-active" : ""}`}
-                onClick={() => setIdx(i)}
-                title={`الصورة ${i + 1}`}
-                aria-label={`الانتقال إلى الصورة ${i + 1}`}
-              >
-                <img src={img.src} alt={img.alt || `عرض ${i + 1}`} />
-              </button>
-            </li>
-          ))}
+      {pics.length > 1 && (
+        <ul className="thumbs thumbs-grid" role="listbox" aria-label="مصغّرات الصور">
+          {pics.map((img, i) => {
+            const key = img.src || `thumb-${i}`;
+            return (
+              <li key={key} role="option" aria-selected={idx === i ? "true" : "false"}>
+                <button
+                  type="button"
+                  className={`thumb ${idx === i ? "is-active" : ""}`}
+                  onClick={() => setIdx(i)}
+                  title={`الصورة ${i + 1}`}
+                  aria-label={`الانتقال إلى الصورة ${i + 1}`}
+                >
+                  <img src={img.src} alt={img.alt || `عرض ${i + 1}`} />
+                </button>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

@@ -1,95 +1,95 @@
-.side{
-  align-self:start;
-  position:sticky; top:12px;
-  display:grid; gap:12px;
+/* =========================
+   Side Column
+   ========================= */
+.side{ display:grid; gap:12px; align-content:start }
+
+/* بطاقات موحّدة */
+.info-card, .seller-card, .collection-card{
+  border:1px solid var(--bd); border-radius:12px; background:#fff;
+  padding:12px; display:grid; gap:10px;
 }
 
-/* ===== بطاقة معلومات: الفئة + العلامة ===== */
-.info-card{
-  border:1px solid var(--bd);
-  border-radius:var(--r);
-  background:#fff;
-  padding:12px;
-  display:grid;
-  gap:10px;
+/* معلومات الفئة/العلامة */
+.info-card .info-row{
+  display:flex; align-items:center; gap:10px;
+  border:1px solid var(--bd); border-radius:10px; background:#fff; padding:10px 12px;
 }
-.info-row{display:grid; grid-template-columns:110px 1fr; align-items:center; gap:8px}
-/* كانت باهتة لأن اللون ثانوي. جعلتها بلون داكن وواضح */
-.info-label{font-size:12px; color:var(--dark); font-weight:700}
-.info-link{
-  color:var(--dark); text-decoration:none; border:1px solid var(--bd);
-  padding:8px 10px; border-radius:10px; display:inline-block; transition:border-color .18s ease;
+.info-card .info-row + .info-row{ margin-top:6px; }
+.info-card .info-label{ font-size:13px; color:var(--secondary); flex:0 0 auto }
+.info-card .info-link{
+  color:var(--dark); text-decoration:none; font-weight:800; transition:color .18s;
 }
-.info-link:hover{border-color:var(--primary)}
+.info-card .info-link:hover, .info-card .info-link:focus-visible{ color:var(--primary); outline:none }
 
-/* ===== بطاقة المتجر ===== */
-.seller-card.v2{
-  border:1px solid var(--bd);
-  border-radius:var(--r);
-  background:#fff;
-  overflow:hidden;
+/* المتجر v2 */
+.seller-card.v2 .seller-head{ display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit }
+.seller-card .seller-logo{
+  width:40px; height:40px; border:1px solid var(--bd); border-radius:10px; object-fit:cover; background:#fff; flex:0 0 auto;
 }
-
-/* رأس البطاقة */
-.seller-head{
-  display:grid; grid-template-columns:auto 1fr auto;
-  gap:10px; align-items:center;
-  padding:10px;
-  text-decoration:none; color:inherit;
-  border-bottom:1px solid var(--bd);
-  background:#fff;
-}
-.seller-logo{width:36px; height:36px; border-radius:8px; border:1px solid var(--bd); object-fit:cover; background:#fff}
-.seller-names{display:grid; gap:2px}
-.seller-name{font-weight:800; color:var(--dark)}
-.seller-followers{font-size:12px; color:var(--secondary)}
-.score-badge{
-  background:var(--soft-success); color:#0a7a4f;
-  border:1px solid rgba(10,187,117,.35);
-  padding:2px 8px; border-radius:999px; font-weight:800; font-size:12px; line-height:1;
+.seller-card .seller-names{ display:grid; gap:2px; min-width:0 }
+.seller-card .seller-name{ font-weight:800; color:var(--dark); line-height:1.2 }
+.seller-card .seller-followers{ font-size:12px; color:var(--secondary) }
+.seller-card .score-badge{
+  margin-inline-start:auto; height:28px; display:grid; place-items:center; padding:0 10px;
+  border-radius:999px; border:1px solid var(--bd); background:#fff; color:var(--secondary-base); font-weight:800;
 }
 
-/* شارة بائع ناجح */
-.seller-subrow{display:flex; gap:8px; align-items:center; padding:8px 10px}
-.seller-tag{
-  font-size:12px; color:#b26a00;
-  background:rgba(255,197,25,.18);
-  border:1px solid rgba(255,197,25,.5);
-  padding:3px 8px; border-radius:999px; font-weight:700;
+.seller-card .seller-subrow{ display:flex; align-items:center; gap:8px }
+.seller-card .seller-tag{
+  height:28px; display:grid; place-items:center; padding:0 10px;
+  border-radius:999px; border:1px solid var(--bd); background:#fff; color:var(--secondary); font-weight:700;
 }
 
-/* عناصر القائمة: هوفر يغيّر البوردر فقط */
-.seller-list{margin:0; padding:6px 10px; list-style:none; display:grid; gap:6px}
+.seller-list{ list-style:none; padding:0; margin:0; display:grid; gap:8px }
 .seller-list li{
   display:flex; align-items:center; gap:8px;
-  padding:10px; border:1px solid var(--bd);
-  border-radius:10px; background:#fff; cursor:pointer;
-  transition:border-color .18s ease;
+  border:1px solid var(--bd); border-radius:10px; background:#fff; padding:10px 12px;
+  cursor:pointer; transition:background .18s, color .18s, border-color .18s, transform .12s;
 }
-.seller-list li:hover{border-color:var(--primary)}
-.seller-list .li-ico{width:20px; height:20px; color:var(--secondary)}
-.seller-list .chev{margin-inline-start:auto; color:var(--secondary)}
+.seller-list li:hover, .seller-list li:focus-within{ border-color:var(--primary) }
+.seller-list .li-ico{
+  width:28px; height:28px; border:1px solid var(--bd); border-radius:8px; display:grid; place-items:center;
+  background:#fff; color:var(--secondary); flex:0 0 auto; transition:color .18s, border-color .18s, background .18s;
+}
+.seller-list li:hover .li-ico, .seller-list li:focus-within .li-ico{ border-color:var(--primary); color:var(--primary) }
+.seller-list .chev{ margin-inline-start:auto; color:var(--secondary) }
 
-/* زر كبِل للمتجر: عند الهوفر يمتلئ باللون الأساسي */
+/* زر pill */
 .btn-pill{
-  margin:8px 10px 12px;
-  display:flex; justify-content:center; align-items:center; gap:8px;
-  height:42px; border-radius:999px; border:1px solid var(--bd);
-  background:#fff; color:var(--dark); text-decoration:none; font-weight:800;
-  transition:background .18s ease,color .18s ease,border-color .18s ease;
+  height:36px; padding:0 14px; border-radius:999px; border:1px solid var(--bd);
+  background:#fff; color:var(--dark); font-weight:800; text-decoration:none;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px; line-height:1;
+  transition:background .18s, color .18s, border-color .18s, transform .12s;
 }
-.btn-pill:hover{
-  background:var(--primary);
-  color:#fff;
-  border-color:var(--primary);
+.btn-pill:hover, .btn-pill:focus-visible{
+  border-color:var(--primary); color:var(--primary); outline:none; transform:translateY(-1px);
 }
-.btn-pill .chev{color:inherit}
+.btn-pill .chev{ display:inline-block; transform:translateY(1px); transition:transform .12s; }
+.btn-pill:hover .chev, .btn-pill:focus-visible .chev{ transform:translate(2px, 1px); }
 
-/* بطاقة المجموعة */
+/* أضف إلى مجموعة */
 .collection-card{
-  display:flex; align-items:center; gap:10px;
-  border:1px solid var(--bd); border-radius:var(--r);
-  background:#fff; padding:12px;
+  display:flex; align-items:center; justify-content:space-between;
+  border:1px dashed var(--bd);
 }
-.collection-card .col-ico{color:var(--primary)}
-.collection-card .plus{margin-inline-start:auto; font-weight:800; color:var(--dark)}
+.collection-card .col-ico{
+  width:34px; height:34px; border:1px solid var(--bd); border-radius:10px; display:grid; place-items:center;
+  background:#fff; color:var(--secondary); transition: color .18s, border-color .18s, background .18s;
+}
+.collection-card .plus{ font-weight:900; color:var(--secondary) }
+.collection-card:hover .col-ico, .collection-card:focus-within .col-ico{ border-color:var(--primary); color:var(--primary) }
+
+/* تركيز */
+.seller-card a:focus-visible, .info-card a:focus-visible, .btn-pill:focus-visible, .seller-list li:focus-within{
+  outline:2px solid var(--soft-primary); outline-offset:2px;
+}
+
+/* استجابة */
+@media (max-width: 1200px){
+  .seller-card .seller-logo{ width:36px; height:36px; }
+  .seller-card .score-badge{ height:26px; padding:0 8px; }
+}
+@media (max-width: 992px){
+  .side{ gap:10px }
+  .info-card, .seller-card, .collection-card{ padding:10px }
+}

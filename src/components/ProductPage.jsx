@@ -1,201 +1,119 @@
-import { useRef } from "react";
-import { useNavigate ,Link  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import Gallery from "./Gallery.jsx";
 import BuyBox from "./BuyBox.jsx";
-import Reviews from "./Reviews.jsx";
-
 import Section from "./Section.jsx";
 import SimilarSection from "./SimilarSection.jsx";
+import Reviews from "./Reviews.jsx";
 import QASection from "./QASection.jsx";
 import PopularSection from "./PopularSection.jsx";
 import RecommendedSection from "./RecommendedSection.jsx";
-import OtherSellers from "./OtherSellers.jsx";
+import SideColumn from "./SideColumn.jsx";
+import InfoSection from "./InfoSection.jsx";
+import SpecsSection from "./SpecsSection.jsx";
+import DescriptionSection from "./DescriptionSection.jsx";
+import CollectionsSection from "./CollectionsSection.jsx";
+
+import AddReviewModal from "./AddReviewModal.jsx";
+import AddQAModal from "./AddQAModal.jsx";
+import ThreadModal from "./ThreadModal.jsx";
 
 import { mockProduct, mockReviews } from "../data/productMock.js";
 
 export default function ProductPage() {
-  const sectionsRef = useRef(null);
   const navigate = useNavigate();
 
-  const reviewCount = Number(mockReviews?.meta?.total ?? 0);
-  const qaCount = Number(mockProduct?.qaCount ?? 0);
+  const product = mockProduct;
+  const productId = product?.id;
 
-  function goToReviews() {
-    const el = document.getElementById("sec-reviews");
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 80;
-    window.scrollTo({ top, behavior: "smooth" });
-  }
+  const reviewCount = Number(mockReviews?.meta?.total ?? 0);
+  const qaCount = Number(
+    product?.qaCount ?? (Array.isArray(product?.qa) ? product.qa.length : 0)
+  );
+
+  const [openAddReview, setOpenAddReview] = useState(false);
+  const [openAsk, setOpenAsk] = useState(false);
+  const [openThread, setOpenThread] = useState(null);
 
   return (
     <main className="page" dir="rtl">
       <header className="head">
         <nav className="breadcrumb">
-<Link to="/">الرئيسية</Link> / <Link to={mockProduct.category?.url || "/c"}>{mockProduct.category?.name || "التصنيف"}</Link> / <span>{mockProduct.brand}</span>
+          <Link to="/">الرئيسية</Link> /{" "}
+          <Link to={product.category?.url || "/c"}>
+            {product.category?.name || "التصنيف"}
+          </Link>{" "}
+          / <span>{product.brand}</span>
         </nav>
       </header>
 
-      {/* الشبكة العلوية 3 أعمدة */}
       <section className="grid grid-3">
-        {/* عمود المعرض */}
         <aside className="gallery-col">
-          <Gallery images={mockProduct.images} />
+          <Gallery images={product.images} />
         </aside>
 
-        {/* عمود الشراء */}
         <section>
-          <BuyBox
-            product={mockProduct}
-            reviewCount={reviewCount}
-            qaCount={qaCount}
-            onNavigate={goToReviews}
-          />
+          <BuyBox product={product} reviewCount={reviewCount} qaCount={qaCount} />
         </section>
 
-        {/* العمود الجانبي */}
-        <aside className="side">
-          <div className="info-card">
-            <div className="info-row">
-              <div className="info-label">الفئة</div>
-              <a href={mockProduct.category?.url} className="info-link">
-                {mockProduct.category?.name}
-              </a>
-            </div>
-            <div className="info-row">
-              <div className="info-label">العلامة التجارية</div>
-              <a href={mockProduct.brandUrl} className="info-link">
-                {mockProduct.brand}
-              </a>
-            </div>
-          </div>
-
-          <div className="seller-card v2">
-            <a
-              href={mockProduct.seller.storeUrl}
-              className="seller-head"
-              title="الذهاب إلى المتجر"
-            >
-              <img
-                className="seller-logo"
-                src={mockProduct.seller.logo}
-                alt={`شعار ${mockProduct.seller.name}`}
-                onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
-              />
-              <div className="seller-names">
-                <div className="seller-name">{mockProduct.seller.name}</div>
-                <div className="seller-followers">
-                  {mockProduct.seller.followers} متابع
-                </div>
-              </div>
-              <span className="score-badge" title="تقييم المتجر">
-                {mockProduct.seller.score.toFixed(1)}
-              </span>
-            </a>
-
-            {mockProduct.seller.successful && (
-              <div className="seller-subrow">
-                <span className="seller-tag">بائع ناجح</span>
-              </div>
-            )}
-
-            <ul className="seller-list">
-              <li>
-                <span className="li-ico">
-                  <svg viewBox="0 0 24 24" width="18" height="18">
-                    <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm-9 9c0-4 4-7 9-7s9 3 9 7"
-                      fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                  </svg>
-                </span>
-                تابع المتجر
-              </li>
-              <li
-                onClick={() => {
-                  const el = document.getElementById("sec-qa");
-                  if (!el) return;
-                  const top = el.getBoundingClientRect().top + window.scrollY - 80;
-                  window.scrollTo({ top, behavior: "smooth" });
-                }}
-                role="button"
-                tabIndex={0}
-              >
-                <span className="li-ico">
-                  <svg viewBox="0 0 24 24" width="18" height="18">
-                    <path d="M21 15a4 4 0 01-4 4H7ل-4 3V7a4 4 0 014-4h10a4 4 0 014 4v8z"
-                      fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                  </svg>
-                </span>
-                أسئلة البائع ({qaCount})<span className="chev">›</span>
-              </li>
-            </ul>
-
-            <a href={mockProduct.seller.storeUrl} className="btn-pill">
-              اذهب إلى المتجر <span className="chev">›</span>
-            </a>
-          </div>
-
-          <div className="collection-card">
-            <span className="col-ico">
-              <svg viewBox="0 0 24 24" width="18" height="18">
-                <path d="M6 2h12a2 2 0 012 2v18l-8-4-8 4V4a2 2 0 012-2z"
-                  fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              </svg>
-            </span>
-            أضف إلى مجموعة
-            <span className="plus">+</span>
-          </div>
-
-          <OtherSellers sellers={mockProduct.otherSellers || []} />
-        </aside>
+        <SideColumn product={product} qaCount={qaCount} />
       </section>
 
-      {/* الأقسام السفلية */}
-      <div ref={sectionsRef} className="flow">
-        <SimilarSection items={mockProduct.similar} />
+      <div className="flow">
+        <SimilarSection items={product.similar} />
 
         <Section id="sec-reviews" title={`التقييمات والتعليقات (${reviewCount})`}>
           <Reviews
-            seed={mockReviews}
-            onViewAll={() => navigate(`/product/${mockProduct.id}/reviews`)}
+            productId={productId}
+            reviews={Array.isArray(mockReviews?.data) ? mockReviews.data : []}
+            onViewAll={() => navigate(`/product/${productId}/reviews`)}
+            onAddClick={() => setOpenAddReview(true)}
           />
         </Section>
 
         <Section id="sec-qa" title={`الأسئلة والأجوبة (${qaCount})`}>
           <QASection
-            qa={mockProduct.qa || []}
-            count={qaCount}
-            onViewAll={() => navigate(`/product/${mockProduct.id}/qa`)}
+            seed={product}
+            productId={productId}
+            onViewAll={() => navigate(`/product/${productId}/qa`)}
+            onAskClick={() => setOpenAsk(true)}
+            onOpenThread={(thread) => setOpenThread(thread)}
           />
         </Section>
 
-        <Section title="معلومات المنتج">
-          <ul className="kv">
-            <li><span>الماركة</span><strong>{mockProduct.brand}</strong></li>
-            <li><span>الفئة</span><strong>{mockProduct.category?.name}</strong></li>
-            <li><span>رمز المنتج</span><strong>{mockProduct.id}</strong></li>
-          </ul>
-        </Section>
+        <InfoSection
+          brand={product.brand}
+          category={product.category?.name}
+          id={product.id}
+        />
+        <SpecsSection specs={product.specs} />
+        <DescriptionSection description={product.description} />
+        <CollectionsSection collections={product.collections} />
 
-        <Section title="خصائص المنتج">
-          <ul className="list-dot">
-            {mockProduct.specs.map((s, i) => <li key={i}>{s}</li>)}
-          </ul>
-        </Section>
-
-        <Section title="وصف المنتج">
-          <p className="desc">{mockProduct.description}</p>
-        </Section>
-
-        <Section title="مجموعات قد تهمك">
-          <ul className="chips">
-            {mockProduct.collections.map((t, i) => (
-              <li key={i}><a href={t.url || "#"}>{t.name}</a></li>
-            ))}
-          </ul>
-        </Section>
-
-        <PopularSection items={mockProduct.popular} />
-        <RecommendedSection items={mockProduct.recommended} />
+        <PopularSection items={product.popular} />
+        <RecommendedSection items={product.recommended} />
       </div>
+
+      {/* مودالات */}
+      <AddReviewModal
+        open={openAddReview}
+        onClose={() => setOpenAddReview(false)}
+        onSubmit={() => setOpenAddReview(false)}
+      />
+
+      <AddQAModal
+        open={openAsk}
+        onClose={() => setOpenAsk(false)}
+        onSubmit={() => setOpenAsk(false)}
+      />
+
+      <ThreadModal
+        open={!!openThread}
+        item={openThread}
+        onClose={() => setOpenThread(null)}
+        onFollowUp={() => {}}
+      />
     </main>
   );
 }
