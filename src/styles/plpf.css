@@ -118,3 +118,26 @@
   .plpf-grid{ grid-template-columns:1fr; }
   .plpf-side{ position:static; }
 }
+/* === SAFETY: ensure PLP two-column layout === */
+.plpf { box-sizing: border-box; }
+.plpf *, .plpf *::before, .plpf *::after { box-sizing: inherit; }
+
+.plpf .plpf-layout {
+  display: grid !important;
+  grid-template-columns: 280px 1fr !important;
+  gap: 16px !important;
+}
+
+.plpf .plpf-side {
+  width: 100%;
+  max-width: 280px;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  overflow: auto;
+  max-height: calc(100vh - 80px);
+}
+
+.plpf .plpf-main {
+  min-width: 0; /* يمنع تمدد الشبكة */
+}

@@ -8,7 +8,6 @@ export default function Toolbar({
 }) {
   return (
     <div className="plpf-toolbar">
-      {showCount && <div className="plpf-toolbar-count">{count} منتج</div>}
       <div className="plpf-toolbar-spacer" />
       {showReset && (
         <button className="plpf-resetall" onClick={onResetAll}>

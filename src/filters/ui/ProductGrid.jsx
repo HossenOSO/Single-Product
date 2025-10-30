@@ -1,4 +1,3 @@
-// src/components/plp/ProductGrid.jsx
 import React from "react";
 
 export default function ProductGrid({ items = [] }) {

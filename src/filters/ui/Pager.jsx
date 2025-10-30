@@ -1,4 +1,3 @@
-// src/components/plp/Pager.jsx
 import React from "react";
 
 export default function Pager({ page, totalPages, onPrev, onNext, onGoto }) {
